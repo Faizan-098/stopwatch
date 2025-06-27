@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stop Watch</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body class="bg-[rgba(0,0,0,0.85)] flex h-screen justify-center px-4 items-center">
+<div class="stop-watch max-w-[400px] w-full bg-black rounded-md p-10 shadow-lg shadow-green-600">
+<h1 class=" text-white font-bold text-center text-4xl mb-5">
+  StopWatch
+</h1>
+<h2 class="text-green-600 font-bold text-center text-5xl display-timer">00:00:00</h2>
+<div class="btn-container flex justify-center items-center gap-5 mt-5
+
+" >
+  <div class="start-btn min-w-[50px] min-h-[50px] bg-white text-black flex justify-center items-center rounded-[50%] cursor-pointer hover:bg-green-500 hover:text-white ease-in duration-150 ">
+    <i class="fa-solid fa-play"></i>
+  </div>
+   <div class="pause-btn min-w-[50px] min-h-[50px] bg-white text-black flex justify-center items-center rounded-[50%] cursor-pointer hover:bg-green-500 hover:text-white ease-in duration-150 ">
+<i class="fa-solid fa-pause"></i>
+  </div>
+  <div class="reset-btn min-w-[50px] min-h-[50px] bg-white text-black flex justify-center items-center rounded-[50%] cursor-pointer hover:bg-green-500 hover:text-white ease-in duration-150 ">
+    <i class="fa-solid fa-rotate-right"></i>
+  </div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+
+<script>
+    const displayTimer = document.querySelector('.display-timer');
+    const startBtn = document.querySelector('.start-btn');
+    const pauseBtn = document.querySelector('.pause-btn');
+    const resetBtn = document.querySelector('.reset-btn');
+
+    let milliseconds = 0;
+    let seconds = 0;
+    let minutes = 0;
+    let clearId = null;
+
+    // Format with 2 digits (00)
+    const formatTime = (val) => val < 10 ? `0${val}` : val;
+
+    const updateDisplay = () => {
+      displayTimer.innerHTML = `${formatTime(minutes)}:${formatTime(seconds)}:${formatTime(milliseconds)}`;
+    };
+
+    const startTimer = () => {
+      if (clearId !== null) return;
+      clearId = setInterval(() => {
+        milliseconds++;
+        if (milliseconds === 100) {
+          milliseconds = 0;
+          seconds++;
+        }
+        if (seconds === 60) {
+          seconds = 0;
+          minutes++;
+        }
+        updateDisplay();
+      }, 10);
+    };
+
+    const pauseTimer = () => {
+      clearInterval(clearId);
+      clearId = null;
+    };
+
+    const resetTimer = () => {
+      clearInterval(clearId);
+      clearId = null;
+      milliseconds = 0;
+      seconds = 0;
+      minutes = 0;
+      updateDisplay();
+    };
+
+    // Button Listeners
+    startBtn.addEventListener('click', startTimer);
+    pauseBtn.addEventListener('click', pauseTimer);
+    resetBtn.addEventListener('click', resetTimer);
+
+    // Show initial 00:00:00
+    updateDisplay();
+  </script>
+</body>
+</html>
